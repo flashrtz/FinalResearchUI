@@ -3,23 +3,23 @@ import React, { Component } from 'react';
 import { confirmAlert } from 'react-confirm-alert'; // Import 
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import ImageUploader from 'react-images-upload';
-
-
+import {CommonGet, CommonPost , CommonDeleteById,CommonGetByParams} from "./../config";
+import swal from 'sweetalert';
 
 class Survey extends Component {
-
      
    state={
 
             id:0,
             isModalOpen:false,
+            isModalGoogleOpen:false,
             categoryAnswer1:"",
             categoryName:"",
             answer1:"",
             answer2:"",
             answer3:"",
             answer4:"",
-
+            gLink:"",
 
             surveyList:[],
             pictures: [] ,
@@ -28,9 +28,21 @@ class Survey extends Component {
 }
 
 constructor(props) {
+    
     super(props);
         this.onDrop = this.onDrop.bind(this);
+
     }
+
+componentWillMount(){
+
+    let userId = window.sessionStorage.getItem("UserId")
+    if(userId == null){
+      this.props.history.push('/CheckDashboard');
+    }
+
+}
+
 componentWillUpdate() {}
 
 categoryName = (e) =>{
@@ -40,6 +52,15 @@ categoryName = (e) =>{
     });
 
 }
+
+gLinkChange = (e) =>{
+
+    this.setState({
+        gLink : e.target.value
+    });
+
+}
+
 
 categoryAnswer1 = (e) =>{
 
@@ -81,10 +102,27 @@ closeModal = ()=>{
 
 }
 
+closeGoogleModal = ()=>{
+    this.setState({
+        isModalGoogleOpen:false
+    
+    });
+    console.log("giya nehda ");
+
+}
 
     modalOpen =()=>{
         this.setState({
             isModalOpen:true
+        
+        });
+        console.log("ko");
+    }
+
+    
+    modalGoogleOpen =()=>{
+        this.setState({
+            isModalGoogleOpen:true
         
         });
         console.log("ko");
@@ -110,7 +148,7 @@ closeModal = ()=>{
             id: this.state.id+1
 
         });
-        window.alert("Added Successfully!");
+        swal("Added Successfully!");
 
 
         console.log("Added Succesfully!");
@@ -121,6 +159,32 @@ closeModal = ()=>{
             
     }
 
+    submitGoogleModal=() => {
+
+        window.sessionStorage.setItem("googleLink",this.state.gLink);
+    }
+
+
+    rendarGoogleModal() {
+        if (!this.state.isModalGoogleOpen) return;
+        return(
+                <div className='popup'>  
+                <div className='popup_inner'>  
+                <label>Add the google survey link:</label>
+                <div> <input type="text" id="categoryId" value={this.state.gLink}  onChange={(e) => this.gLinkChange(e)}></input></div> <br/> <br/> <br/>
+                      
+                    <div class="button_formbutton">
+                        <button onClick = {this.submitGoogleModal}>Submit</button>
+                    </div>
+                    <div class="button_formbutton">
+                        <button onClick = {this.closeGoogleModal}>Close</button>
+                    </div>
+                </div>
+             </div>
+
+        );
+
+    };
     rendarModal() {
         if (!this.state.isModalOpen) return;
         return(
@@ -153,14 +217,58 @@ closeModal = ()=>{
 
     submitSurvey =()=>{
 
-        window.sessionStorage.setItem("SurveyList",JSON.stringify(this.state.surveyList));
-        console.log("Ela");
-        if(this.state.surveyList != 0){
-        window.alert("Survey Submitted Successfully!");
+        let linkgoogle = window.sessionStorage.getItem("googleLink")
+    if(linkgoogle != null)
+        {
+
+            let formdata  = {
+                userId:window.sessionStorage.getItem("UserId"),
+                userEmail:window.sessionStorage.getItem("UserEmail"),
+                link:window.sessionStorage.getItem("googleLink"),              
+            
+              }
+         
+            
+              CommonPost('surveyLink/add',formdata)
+              .then(res=>res.json())
+              .then(json =>{
+                swal({
+                    title: "Survey Added And Published Successfully!",
+                    icon: "success",
+                    button: "OK",
+                  });
+                  console.log(json);
+                 //window.location.reload();
+              });
+
+
         }
         else{
-       window.alert("Please create a survey!");
-        }
+                let formdata = this.state.surveyList.map((item)=>{
+    return{
+        userId:window.sessionStorage.getItem("UserEmail"),
+        googleLink:window.sessionStorage.getItem("googleLink"),
+        surveyTopic:"itemsurveyTopic",
+        categoryName:item.categoryName,
+        answer1:item.answer1,
+        answer2:item.answer2,
+        answer3:item.answer3,
+        answer4:item.answer4,
+    }
+  });
+
+  CommonPost('survey/addAll',formdata)
+  .then(res=>res.json())
+  .then(json =>{
+    swal({
+        title: "Survey Added And Published Successfully!",
+        icon: "success",
+        button: "OK",
+      });
+      console.log(json);
+     //window.location.reload();
+  });
+}
     }
 
     formItemDeleteHandler = (id) => {
@@ -279,18 +387,20 @@ closeModal = ()=>{
          <div class="submit">
                     <button type="submit"class="button_formbuttonsurvey" onClick = {this.modalOpen}>Add a Survey Topic</button>
         </div>
+        <div class="submit">
+                    <button type="submit"class="button_formbuttonsurvey" onClick = {this.modalGoogleOpen}>Add a Google Survey</button>
+        </div>
     </div>
     );
 
     return (
 <>
     <div>
-      
         {form}
-    
        {table}
        </div>
        <div>   {this.rendarModal()}</div>
+       <div>   {this.rendarGoogleModal()}</div>
        <div>
         
        <div>

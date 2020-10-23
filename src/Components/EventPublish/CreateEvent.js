@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from 'react-bootstrap/Button'
+import swal from 'sweetalert';
+
 import {CommonGet, CommonPost , CommonDeleteById} from "../../config";
 
 class CreateEvent extends Component {
@@ -44,6 +46,21 @@ constructor(props) {
     super(props);
       
     }
+
+
+componentWillMount(){
+
+  let userId = window.sessionStorage.getItem("UserId")
+  if(userId == null){
+    this.props.history.push('/CheckDashboard');
+
+  }
+  
+
+
+}
+
+
 componentWillUpdate() {}
 handleChange = date => {
   this.setState({
@@ -123,16 +140,27 @@ formSubmitHandler=()=>{
     description:this.state.description,
     numberofTicketCategories:this.state.ticketCategoryCount,
     dateAndTime:this.state.dateAndTime,
-    location:this.state.location
+    location:this.state.location,
+    ticketOne:this.state.ticketOne,
+    ticketTwo:this.state.ticketOnePrice,
+    ticketThree:this.state.ticketTwo,
+    ticketOnePrice:this.state.ticketTwoPrice,
+    ticketTwoPrice:this.state.ticketThree,
+    ticketThreePrice:this.state.ticketThreePrice,
 
   }
 //window.alert(JSON.stringify(formdata));
   CommonPost('createEvents/add/',formdata)
   .then(res=>res.json())
   .then(json =>{
-      window.alert("Item Added!");
+    swal({
+      title: "Event published Successfully!",
+      text: "Success!",
+      icon: "success",
+      button: "OK",
+    });
       console.log(json);
-     window.location.reload();
+    // window.location.reload();
   });
 }
 
@@ -192,6 +220,7 @@ formSubmitHandler=()=>{
         <Form.Label>Scheduled Date and Time</Form.Label><br/>
         <DatePicker
         selected={this.state.dateAndTime}
+        minDate={new Date()}
         onChange={this.handleChange}
         showTimeSelect
       /><br/><br/>
@@ -212,3 +241,4 @@ formSubmitHandler=()=>{
 }
 
 export default CreateEvent;
+

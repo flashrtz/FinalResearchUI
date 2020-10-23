@@ -8,12 +8,21 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import Home from './Components/Home';
 import About from './Components/About';
-import Dashboard from './Components/Dashboard';
 import Survey from './Components/Survey';
 import ContactUs from './Components/ContactUs';
 import SignUp from './Components/Authentication/SignUp';
 import Login from './Components/Authentication/Login';
 import CreateEvent from './Components/EventPublish/CreateEvent';
+import FindSupplier from './Components/Supplier/FindSupplier';
+import UserViewProfile from './Components/User/UserViewProfile';
+import ManageBookings from './Components/Bookings/ManageBookings';
+import loginform from './Components/loginform';
+import CheckDashboard from './CheckDashboard';
+import CompleteSurvey from './Components/CompleteSurvey';
+
+
+
+
 
 
 class App extends Component{
@@ -30,29 +39,48 @@ class App extends Component{
 		  		<a href="#" class="img logo rounded-circle mb-5" style={{backgroundImage: "url(../public/images/logo.jpg);"}}></a>
 	        <ul class="list-unstyled components mb-5">
 	          <li class="active">
-              <Link to={'/Dashboard'} className="nav-link">Dashboard</Link>
-              
+              <Link to={'/CheckDashboard'} className="nav-link">Dashboard</Link>
 	          </li>
+            <li>
+	              <Link to={'/Survey'} className="nav-link">+ Survey</Link>
+	          </li>
+            <li>
+	              <Link to={'/UserViewProfile'} className="nav-link">UserViewProfile</Link>
+	          </li>
+            <li>
+	              <Link to={'/FindSupplier'} className="nav-link">FindSupplier</Link>
+	          </li>
+            <li>
+	              <Link to={'/CreateEvent'} className="nav-link">CreateEvent</Link>
+	          </li>
+           
+            {/* <li>
+	              <Link to={'/UserViewProfile'} className="nav-link">UserViewProfile</Link>
+	          </li> */}
+            <li>
+	              <Link to={'/ManageBookings'} className="nav-link">ManageBookings</Link>
+	          </li>
+          
+          
+	          {/* <li>
+	              <Link to={'/About'} className="nav-link">About</Link>
+	          </li> */}
+           
             <li>
               <Link to={'/ContactUs'} className="nav-link">ContactUs</Link>
-	           
 	          </li>
-	          <li>
-	              <Link to={'/About'} className="nav-link">About</Link>
-	          </li>
-            <li>
-	              <Link to={'/Survey'} className="nav-link">Survey</Link>
-	          </li>
-            <li>
+            {/* <li>
 	              <Link to={'/Login'} className="nav-link">Login</Link>
 	          </li>
+              <li>
+	              <Link to={'/SignUp'} className="nav-link">SignUp</Link>
+	          </li> */}
+         
+          
+          
+          
+          
 	          
-	          <li>
-              <a href="#">Portfolio</a>
-	          </li>
-	          <li>
-              <a href="#">Contact</a>
-	          </li>
 	        </ul>
 
 	        <div class="footer">
@@ -81,9 +109,9 @@ class App extends Component{
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="nav navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="/">LogOut</a>
                 </li>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                     <a class="nav-link" href="#">ContactUs</a>
                 </li>
                 <li class="nav-item">
@@ -94,20 +122,31 @@ class App extends Component{
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
         </nav>
-
+      
         <Switch>
-              <Route exact path='/Dashboard' component={Dashboard} />
               <Route exact path='/ContactUs' component={ContactUs} />
               <Route exact path='/About' component={About} />
               <Route exact path='/Survey' component={Survey} />
               <Route exact path='/SignUp' component={SignUp} />
-              <Route exact path='/Login' component={Login} />
               <Route exact path='/CreateEvent' component={CreateEvent} />
+              <Route exact path='/FindSupplier' component={FindSupplier} />
+              <Route exact path='/SignUp' component={SignUp} />
+              <Route exact path='/UserViewProfile' component={UserViewProfile} />
+              <Route exact path='/ManageBookings' component={ManageBookings} />
+              <Route exact path='/loginform' component={loginform} />
+              <Route exact path='/CheckDashboard' component={CheckDashboard} />
+              <Route exact path='/CompleteSurvey' component={CompleteSurvey} />
+
+
+              
+         
+              <Route exact path='/' component={Login} />
+              
           </Switch>
      
       </div>

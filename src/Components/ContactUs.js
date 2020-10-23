@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 
 
 class ContactUs extends Component {
+
+
+
+submitHandler =() =>{
+
+
+  swal({
+    title: "Message received successfully!",
+    text: "We 'll get to you quickly!",
+    icon: "success",
+    button: "OK",
+  });
+}
+
+
     render() {
       return (
      <div>
@@ -18,7 +34,7 @@ class ContactUs extends Component {
              <textarea name="message" class="feedback-input" id="comment" placeholder="Message"></textarea>
              </p>
                  <div class="submit">
-                    <button type="submit" class="button-blue">SUBMIT</button>
+                    <button type="button" class="button-blue" onClick={this.submitHandler}>SUBMIT</button>
                       
                  </div>
         </form>

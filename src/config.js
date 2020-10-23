@@ -8,6 +8,11 @@ var api = 'http://localhost:5000';
        return fetch(api+'/'+controller+'/'+queryString);
         
     }
+    export const CommonGetByParams = (controller, queryString) => {
+
+        return fetch(api+'/'+controller+'?'+queryString);
+         
+     }
 
     export const CommonPost =  (controller,requestbody)=> {
         const requestOptions = {
